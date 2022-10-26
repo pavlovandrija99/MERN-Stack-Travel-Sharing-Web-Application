@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: rgba(255, 255, 128, .5);
 }
 
 code {
@@ -18,3 +19,4 @@ code {
   justify-content: center;
   align-items: center;
 }
+
