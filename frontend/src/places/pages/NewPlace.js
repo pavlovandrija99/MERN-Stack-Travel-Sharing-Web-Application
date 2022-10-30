@@ -1,4 +1,6 @@
-import React, { useCallback, useReducer } from "react";
+import React from "react";
+
+import { useForm } from "../../shared_features/hooks/FormHook.js";
 
 import Input from "../../shared_features/components/FormElements/Input.js";
 import Button from "../../shared_features/components/FormElements/Button.js";
@@ -8,39 +10,12 @@ import {
   VALIDATOR_REQUIRE,
 } from "../../shared_features/utils/Validators.js";
 
-import "./NewPlace.css";
-
-const formReducer = (state, action) => {
-  switch (action.type) {
-    case "INPUT_CHANGE":
-      let formIsValid = true;
-      for (const input in state.inputs) {
-        if (input === action.input) {
-          formIsValid = formIsValid && action.isValid;
-        } else {
-          formIsValid = formIsValid && state.inputs[input].isValid;
-        }
-      }
-      return {
-        ...state,
-        inputs: {
-          ...state.inputs,
-          [action.input]: {
-            value: action.value,
-            isValid: action.isValid,
-          },
-        },
-        isOverallFormValid: formIsValid,
-      };
-    default:
-      return state;
-  }
-};
+import "./PlaceForm.css";
 
 const NewPlace = () => {
-
-  const [formState, dispatch] = useReducer(formReducer, {
-    inputs: {
+  // Calling custom hook useForm()
+  const [formState, inputHandler] = useForm(
+    {
       title: {
         value: "",
         isValid: false,
@@ -49,18 +24,13 @@ const NewPlace = () => {
         value: "",
         isValid: false,
       },
+      address: {
+        value: "",
+        isValid: false,
+      },
     },
-    isOverallFormValid: false,
-  });
-
-  const inputHandler = useCallback((id, value, isValid) => {
-    dispatch({
-      type: "INPUT_CHANGE",
-      value: value,
-      isValid: isValid,
-      input: id,
-    });
-  }, []);
+    false
+  );
 
   const placeSubmitHandler = (event) => {
     event.preventDefault();
@@ -90,7 +60,7 @@ const NewPlace = () => {
         id="address"
         element="input"
         label="Address"
-        validators={[ VALIDATOR_REQUIRE() ]}
+        validators={[VALIDATOR_REQUIRE()]}
         errorText="Please enter a valid address."
         onInput={inputHandler}
       />

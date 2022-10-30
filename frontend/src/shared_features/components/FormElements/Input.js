@@ -28,11 +28,10 @@ const Input = (props) => {
      Returns 2 values, first is currenct state object,
                        second is dispatch function we can call. */
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: "",
-    isValid: false,
+    value: props.initialValue || "",
+    isValid: props.initialIsValid || false,
     isTouched: false,
   });
-
 
   const { id, onInput } = props;
 
